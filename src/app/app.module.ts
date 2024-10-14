@@ -5,10 +5,12 @@ import { RecadosModule } from '../recados/recados.module';
 import { RecadosService } from '../recados/recados.service';
 import { AppController } from './app.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { PessoasModule } from 'src/pessoas/pessoas.module';
 
 @Module({
   imports: [
     RecadosModule,
+    PessoasModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
