@@ -12,18 +12,6 @@ export class RecadosService {
     private readonly recadoRepository: Repository<Recado>,
   ) {}
 
-  private lastId = 1;
-  private recados: Recado[] = [
-    {
-      id: 1,
-      texto: 'Recado de teste',
-      de: 'Zeca',
-      para: 'Roberto',
-      lido: false,
-      data: new Date(),
-    },
-  ];
-
   throwNotFoundError() {
     throw new NotFoundException('Recado não encontrado');
   }
