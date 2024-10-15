@@ -4,12 +4,14 @@ import { CreateRecadoDto } from './dto/create-recado.dto';
 import { UpdateRecadoDto } from './dto/update-recado.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { PessoasService } from 'src/pessoas/pessoas.service';
 
 @Injectable()
 export class RecadosService {
   constructor(
     @InjectRepository(Recado)
     private readonly recadoRepository: Repository<Recado>,
+    private readonly pessoasService: PessoasService,
   ) {}
 
   throwNotFoundError() {
@@ -17,7 +19,22 @@ export class RecadosService {
   }
 
   async findAll() {
-    const recados = await this.recadoRepository.find();
+    const recados = await this.recadoRepository.find({
+      relations: [ 'de', 'para' ],
+      order: {
+        id: 'desc',
+      },
+      select: {
+        de: {
+          id: true,
+          nome: true,
+        },
+        para: {
+          id: true,
+          nome: true,
+        },
+      },
+    });
     return recados;
   }
 
@@ -27,6 +44,20 @@ export class RecadosService {
       where: {
         id,
       },
+      relations: [ 'de', 'para' ],
+      order: {
+        id: 'desc',
+      },
+      select: {
+        de: {
+          id: true,
+          nome: true,
+        },
+        para: {
+          id: true,
+          nome: true,
+        },
+      },
     });
 
     if (recado) return recado;
@@ -35,14 +66,21 @@ export class RecadosService {
   }
 
   async create(createRecadoDto: CreateRecadoDto) {
+    const { deId, paraId } = createRecadoDto;
+    //encontra a pessoa que esta criando o recado
+    const de = await this.pessoasService.findOne(deId);
+    //encontra a pessoa que esta recebendo o recado
+    const para = await this.pessoasService.findOne(paraId);
+
     const novoRecado = {
-      ...createRecadoDto,
+      texto: createRecadoDto.texto,
+      de,
+      para,
       lido: false,
       data: new Date(),
     };
 
     const recado = await this.recadoRepository.create(novoRecado);
-
     return this.recadoRepository.save(recado);
   }
 
@@ -60,7 +98,15 @@ export class RecadosService {
     if (!recado) return this.throwNotFoundError();
 
     await this.recadoRepository.save(recado);
-    return recado;
+    return {
+      ...recado,
+      de: {
+        id: recado.de.id,
+      },
+      para: {
+        id: recado.para.id,
+      },
+    };
   }
 
   async remove(id: number) {
