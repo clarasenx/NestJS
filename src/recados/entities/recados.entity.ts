@@ -18,13 +18,13 @@ export class Recado {
   texto: string;
 
   //muitos recados podem ser enviados por uma pessoa
-  @ManyToOne(() => Pessoa)
+  @ManyToOne(() => Pessoa, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   //especifica a coluna 'de' que armazena o ID da pessoa que enviou o recado
   @JoinColumn({ name: 'de'})
   de: Pessoa;
 
   //muitos recados podem ser enviados para uma unica pessoa
-  @ManyToOne(() => Pessoa)
+  @ManyToOne(() => Pessoa, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   //especifica a coluna 'para' que armazena o ID da pessoa que recebeu o recado
   @JoinColumn({ name: 'para' })
   para: Pessoa;
