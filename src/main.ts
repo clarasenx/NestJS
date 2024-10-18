@@ -10,7 +10,7 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true, //remove chaves que não estão no dto
       forbidNonWhitelisted: true, //levanta erro quando a chave não existir
-      transform: false, //tenta tranformar os tipos de dados de param e dtos
+      transform: false, //tenta transformar os tipos de dados de param e dtos
     }),
     new ParseIntIdPipe()
   );

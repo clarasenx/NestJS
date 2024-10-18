@@ -10,7 +10,7 @@ export class ParseIntIdPipe implements PipeTransform {
     const parsedValue = Number(value);
 
     if(isNaN(parsedValue)) {
-      throw new BadRequestException('ParseIntIdPipe espera uma string numerica.')
+      throw new BadRequestException('ParseIntIdPipe espera uma string numérica.')
     }
 
     if (parsedValue < 0) {
