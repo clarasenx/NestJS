@@ -27,7 +27,7 @@ export class RecadosController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  findOne(@Param('id') id: number) {
     return this.recadosService.findOne(id);
   }
 
@@ -38,14 +38,14 @@ export class RecadosController {
 
   @Patch('update=:id')
   update(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id') id: number,
     @Body() updateRecadoDto: UpdateRecadoDto,
   ) {
     return this.recadosService.update(id, updateRecadoDto);
   }
 
   @Delete('remove=:id')
-  remove(@Param('id', ParseIntPipe) id: number) {
+  remove(@Param('id') id: number) {
     return this.recadosService.remove(id);
   }
 }
