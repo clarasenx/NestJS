@@ -6,7 +6,7 @@ import {
   HttpCode,
   HttpStatus,
   Param,
-  ParseIntPipe,
+  Req,
   Patch,
   Post,
   Query,
@@ -16,8 +16,8 @@ import { RecadosService } from './recados.service';
 import { CreateRecadoDto } from './dto/create-recado.dto';
 import { UpdateRecadoDto } from './dto/update-recado.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { ChangeDataInterceptor } from 'src/common/interceptors/change-data.interceptor';
 import { AuthTokenInterceptor } from 'src/common/interceptors/auth-token.interceptor';
+import { Request } from 'express';
 
 @Controller('recados')
 @UseInterceptors(AuthTokenInterceptor)
@@ -26,8 +26,8 @@ export class RecadosController {
 
   @HttpCode(HttpStatus.OK)
   @Get()
-  findAll(@Query() paginationDto: PaginationDto) {
-    return this.recadosService.findAll(paginationDto);
+  findAll(@Query() paginationDto: PaginationDto, @Req() req: Request) {
+    console.log('RecadosController', req[ 'user' ]);
   }
 
   @Get(':id')
