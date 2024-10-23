@@ -15,6 +15,9 @@ async function bootstrap() {
     new ParseIntIdPipe()
   );
 
+  // não usa o sistema de injeção de dependência do NestJS
+  // app.useGlobalFilters(new MyExceptionFilter())
+
   await app.listen(3000);
 }
 bootstrap();
